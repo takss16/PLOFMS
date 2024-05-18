@@ -48,11 +48,7 @@ class FilecasesController extends Controller
         return view('dashboard', compact('user'));
     }
 
-    public function manageUsers()
-    {
 
-        return view('backend.users');
-    }
 
     /**
      * Show the form for creating a new resource.
