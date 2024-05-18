@@ -27,7 +27,7 @@
 
                                     </div>
                                     <div class="card-body">
-                                        <h5 class="card-title">{{ $fileCase->file_name }}</h5>
+                                        <p class="card-title">{{ $fileCase->file_name }}</p>
                                         <div class="text-center">
                                             <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteFileModal{{ $fileCase->id }}">
                                                 <i class="fas fa-trash"></i>

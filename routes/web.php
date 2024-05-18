@@ -26,40 +26,51 @@ Route::get('/', function () {
 Route::get('/dashboard', [FilecasesController::class, 'dashboard'])
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
-Route::post('/create-case', [CasesController::class, 'store'])->name('store.case');
-Route::get('/case', [CasesController::class, 'createCase'])->name('case');
-Route::get('/folders', [FilecasesController::class, 'viewFolders'])->name('folders');
-Route::post('/file/store', [FilecasesController::class, 'store'])->name('file.store');
-Route::delete('/file/{id}', [FilecasesController::class, 'destroy'])->name('file.destroy');
-Route::get('/users', [FilecasesController::class, 'manageUsers'])->name('manage.users');
-Route::get('/cases/{caseId}/folders/{folderId}/pdf', [FilecasesController::class, 'viewPDF'])->name('folder.viewPDF');
-Route::get('/case/{id}/edit', [CasesController::class, 'edit'])->name('case.edit');
-Route::post('/case/{id}/update', [CasesController::class, 'update'])->name('case.update');
-Route::get('/case/{id}/folders', [CasesController::class, 'showFolders'])->name('case.folders');
-Route::get('/cases/{case}/folders/{folder}', [FolderController::class, 'viewFolderFileCases'])->name('case.folderFiles');
-Route::post('/folders', [FolderController::class, 'storeFolder'])->name('folder.store');
-Route::delete('/cases/{case}/folders/{folder}', [FolderController::class, 'destroy'])->name('folder.destroy');
-Route::put('/folders/{folder}', [FolderController::class, 'update'])->name('folder.update');
-Route::post('/items', [UserController::class, 'store'])->name('user.store');
+
+    //this routes can access bu assistant
+    Route::middleware(['auth', 'role:assistant'])->group(function () {
+        Route::get('/folders', [FilecasesController::class, 'viewFolders'])->name('folders');
+
+        Route::get('/case', [CasesController::class, 'createCase'])->name('case');
+
+        Route::get('/cases/{caseId}/folders/{folderId}/pdf', [FilecasesController::class, 'viewPDF'])->name('folder.viewPDF');
+
+        Route::get('/case/{id}/folders', [CasesController::class, 'showFolders'])->name('case.folders');
+
+        Route::get('/cases/{case}/folders/{folder}', [FolderController::class, 'viewFolderFileCases'])->name('case.folderFiles');
+    });
 
 
 
+    // Routes restricted to admin only
+    Route::middleware(['auth', 'role:admin'])->group(function () {
+        Route::post('/create-case', [CasesController::class, 'store'])->name('store.case');
+
+        Route::post('/file/store', [FilecasesController::class, 'store'])->name('file.store');
+
+        Route::delete('/file/{id}', [FilecasesController::class, 'destroy'])->name('file.destroy');
+
+        Route::get('/users', [  UserController::class, 'manageUsers'])->name('manage.users');
+
+        Route::get('/case/{id}/edit', [CasesController::class, 'edit'])->name('case.edit');
+
+        Route::post('/case/{id}/update', [CasesController::class, 'update'])->name('case.update');
+
+        Route::post('/folders', [FolderController::class, 'storeFolder'])->name('folder.store');
+
+        Route::delete('/cases/{case}/folders/{folder}', [FolderController::class, 'destroy'])->name('folder.destroy');
+
+        Route::put('/folders/{folder}', [FolderController::class, 'update'])->name('folder.update');
+
+        Route::post('/users', [UserController::class, 'store'])->name('user.store');
+
+        Route::delete('/users/{userId}/delete-roles', [UserController::class, 'deleteRoles'])->name('user.deleteRoles');
+
+        Route::post('/users/{id}/reset-password', [UserController::class, 'resetPassword'])->name('user.resetPassword');
+
+    });
 
 
-
-
-
-
-
-
-
-// Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
-
-// });
-
-// Route::middleware(['auth', 'role:assistant'])->name('assistant.')->prefix('assistant')->group(function () {
-
-// });
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
