@@ -23,15 +23,20 @@
                             <div class="col-md-3 mb-4 col-3 mt-3">
                                 <div class="card">
                                     <div class="zoom">
-                                        <img src="{{ asset('storage/files/' . $fileCase->file_name) }}" alt="{{ $fileCase->file_name }}" class="card-img-top" style="max-height: 200px; object-fit: cover;">
+                                        <a href="{{ asset('storage/files/' . $fileCase->file_name) }}" data-lightbox="image-{{ $fileCase->id }}" data-title="{{ $fileCase->file_name }}">
+                                            <img src="{{ asset('storage/files/' . $fileCase->file_name) }}" alt="{{ $fileCase->file_name }}" class="card-img-top" style="max-height: 200px; object-fit: cover;">
+                                        </a>
 
                                     </div>
                                     <div class="card-body">
-                                        <p class="card-title">{{ $fileCase->file_name }}</p>
                                         <div class="text-center">
+                                            <p class="card-title">{{ $fileCase->file_name }}</p>
+                                            @hasrole('admin')
                                             <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteFileModal{{ $fileCase->id }}">
                                                 <i class="fas fa-trash"></i>
                                             </button>
+                                            @endrole
+
                                         </div>
 
                                     </div>
@@ -73,4 +78,18 @@
             </div>
         </div>
     </div>
+    <script>
+        lightbox.option({
+            'resizeDuration': 200,
+            'wrapAround': true,
+            'alwaysShowNavOnTouchDevices': true,
+            'disableScrolling': true,
+            'showImageNumberLabel': true,
+            'albumLabel': "Image %1 of %2",
+            'positionFromTop': 50,
+            'fadeDuration': 600,
+            'imageFadeDuration': 600,
+            'resizeDuration': 700
+        });
+    </script>
 </x-app-layout>

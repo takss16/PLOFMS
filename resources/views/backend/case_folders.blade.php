@@ -22,12 +22,15 @@
                                     </div>
                                 </a>
                             <hr>
-                        <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteFolderModal{{ $folder->id }}">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editFolderModal{{ $folder->id }}">
-                            <i class="fas fa-pencil-alt"></i>
-                        </button>
+                            @hasrole('admin')
+                            <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteFolderModal{{ $folder->id }}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                            <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editFolderModal{{ $folder->id }}">
+                                <i class="fas fa-pencil-alt"></i>
+                            </button>
+                            @endrole
+
                         </div>
 
                         <div class="modal fade" id="editFolderModal{{ $folder->id }}" tabindex="-1" role="dialog" aria-labelledby="editFolderModalLabel{{ $folder->id }}" aria-hidden="true">
@@ -122,4 +125,6 @@
             </div>
         </div>
     </div>
+
+
 </x-app-layout>
