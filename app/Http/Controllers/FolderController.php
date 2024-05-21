@@ -9,13 +9,17 @@ use Barryvdh\DomPDF\Facade\Pdf as PDF;
 
 class FolderController extends Controller
 {
-    public function viewFolderFileCases($caseId, $folderId)
+    public function viewFolderFileCases($encryptedCaseId, $encryptedFolderId)
     {
+        $caseId = decrypt($encryptedCaseId);
+        $folderId = decrypt($encryptedFolderId);
+
         $case = Cases::findOrFail($caseId);
         $folder = Folders::with('fileCases')->findOrFail($folderId);
 
         return view('backend.folder_file_cases', compact('case', 'folder'));
     }
+
 
 
 

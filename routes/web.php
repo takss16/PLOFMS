@@ -35,7 +35,7 @@ Route::get('/dashboard', [FilecasesController::class, 'dashboard'])
 
         Route::get('/cases/{caseId}/folders/{folderId}/pdf', [FilecasesController::class, 'viewPDF'])->name('folder.viewPDF');
 
-        Route::get('/case/{id}/folders', [CasesController::class, 'showFolders'])->name('case.folders');
+        Route::get('case/folders/{id}', [CasesController::class, 'showFolders'])->name('case.folders');
 
         Route::get('/cases/{case}/folders/{folder}', [FolderController::class, 'viewFolderFileCases'])->name('case.folderFiles');
     });

@@ -19,8 +19,9 @@ class CasesController extends Controller
         return view('backend.create-case');
     }
 
-        public function showFolders($id)
+        public function showFolders($encryptedId)
     {
+        $id = decrypt($encryptedId);
         // Find the case or fail, loading its folders and associated files
         $case = Cases::with('folders.fileCases')->findOrFail($id);
 

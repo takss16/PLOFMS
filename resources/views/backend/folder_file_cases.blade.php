@@ -4,6 +4,7 @@
         <div class="card mt-4">
             <div class="card-body">
                 <div class="mb-5">
+                    @hasrole('admin')
                     <form action="{{ route('file.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input type="hidden" name="folders_id" value="{{ $folder->id }}">
@@ -13,6 +14,8 @@
                         </div>
                         <button type="submit" class="btn btn-primary mt-3">Add File</button>
                     </form>
+                    @endrole()
+
                 </div>
 <hr>
                 @if($folder->fileCases->isEmpty())

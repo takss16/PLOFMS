@@ -29,8 +29,9 @@
     <!-- Custom styles for this page -->
    <link href="{{ asset('admin_assets/vendor/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet">
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha512-8nPjX2TMAr7c+cqcz7nrjupCfyo1ZztcM9A4T8hp3Gq94r3L2c9BEKZYN3P9r2ntNlUel+ayH5YkvA88JSU4Bg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-   <!-- Lightbox2 CSS -->
+
    <link href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" rel="stylesheet">
+
 </head>
 
 
@@ -233,6 +234,8 @@
 
             <!-- Page level custom scripts -->
             <script src="{{ asset('admin_assets/js/demo/datatables-demo.js') }}"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+
 
 </body>
 
