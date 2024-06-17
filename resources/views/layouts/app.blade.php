@@ -79,6 +79,11 @@
                 @endrole
 
             </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{{route('folders.index')}}">
+                    <i class="fas fa-fw fa-tachometer-alt"></i>
+                    <span>All Folders </span></a>
+            </li>
 
         </ul>
         <!-- End of Sidebar -->

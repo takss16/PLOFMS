@@ -9,7 +9,7 @@ class Folders extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['cases_id', 'folder_name'];
+    protected $fillable = ['cases_id', 'folder_name', 'type'];
 
     public function cases()
     {

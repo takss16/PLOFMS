@@ -19,7 +19,7 @@ class CasesController extends Controller
         return view('backend.create-case');
     }
 
-        public function showFolders($encryptedId)
+    public function showFolders($encryptedId)
     {
         $id = decrypt($encryptedId);
         // Find the case or fail, loading its folders and associated files
@@ -40,7 +40,7 @@ class CasesController extends Controller
         $pdf = PDF::loadView('backend.case_pdf', compact('case'));
 
         // Stream the generated PDF
-        return $pdf->stream('case_'.$case->case_number.'.pdf');
+        return $pdf->stream('case_' . $case->case_number . '.pdf');
     }
 
 
@@ -63,53 +63,27 @@ class CasesController extends Controller
         $validatedData = $request->validate([
             'case_number' => 'required|string',
             'docker_number' => 'nullable|string',
-            'files.*' => 'nullable|file',
             'name' => 'required|string',
-            'folder_name' => 'nullable|string', // Added validation for folder_name
+            'date' => 'required|date', // Validate the date field
         ]);
-
+    
         try {
-            // Retrieve or create the case by its case_number
-            $case = Cases::firstOrCreate(
-                ['case_number' => $validatedData['case_number']],
-                ['docker_number' => $validatedData['docker_number'], 'name' => $validatedData['name']]
-            );
-
-            // Determine the folder name
-            $folderName = $validatedData['folder_name'] ?? 'Folder for ' . $validatedData['case_number'];
-
-            // Create a folder for this case
-            $folder = $case->folders()->create([
-                'folder_name' => $folderName,
+            // Create a new case
+            $case = Cases::create([
+                'case_number' => $validatedData['case_number'],
+                'docker_number' => $validatedData['docker_number'] ?? null,
+                'name' => $validatedData['name'],
+                'date' => $validatedData['date'],
             ]);
-
-            // Upload files if present in the request
-            if ($request->hasFile('files')) {
-                foreach ($request->file('files') as $file) {
-                    if ($file->isValid()) {
-                        // Get the original file name
-                        $fileName = $file->getClientOriginalName();
-
-                        // Store the file in the 'files' directory using the original file name
-                        $filePath = $file->storeAs('public/files', $fileName);
-
-                        // Create a new filecase record with the original file name
-                        $folder->fileCases()->create([
-                            'file_name' => $fileName,
-                            'file_path' => $filePath,
-                        ]);
-                    } else {
-                        return redirect()->back()->with('error', 'Invalid file upload');
-                    }
-                }
-            }
-
-            return redirect('folders')->with('success', 'Files uploaded successfully');
+    
+            return redirect('folders')->with('success', 'Case stored successfully');
         } catch (\Exception $e) {
-            // Handle any exceptions (e.g., file storage errors)
+            // Handle any exceptions
             return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
         }
     }
+    
+
 
 
     /**

@@ -24,6 +24,7 @@ class FilecasesController extends Controller
         return view('backend.index', compact('cases'));
     }
 
+    
     public function viewPDF($caseId, $folderId)
     {
         // Find the case or fail
@@ -61,24 +62,32 @@ class FilecasesController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+   public function store(Request $request)
     {
         $request->validate([
-            'file_name' => 'required|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048',
+            'file_name.*' => 'required|file|mimes:jpg,jpeg,png',
             'folders_id' => 'required|exists:folders,id',
         ]);
 
-        $file = $request->file('file_name');
-        $fileName = time() . '_' . $file->getClientOriginalName();
-        $filePath = $file->storeAs('files', $fileName, 'public');
+        try {
+            // Process each uploaded file
+            foreach ($request->file('file_name') as $file) {
+                $fileName = time() . '_' . $file->getClientOriginalName();
+                $filePath = $file->storeAs('files', $fileName, 'public');
 
-        FileCases::create([
-            'folders_id' => $request->folders_id,
-            'file_name' => $fileName,
-        ]);
+                FileCases::create([
+                    'folders_id' => $request->folders_id,
+                    'file_name' => $fileName,
+                ]);
+            }
 
-        return redirect()->back()->with('success', 'File uploaded successfully.');
+            return redirect()->back()->with('success', 'Files uploaded successfully.');
+        } catch (\Exception $e) {
+            // Handle any exceptions (e.g., file storage errors)
+            return redirect()->back()->with('error', 'An error occurred: ' . $e->getMessage());
+        }
     }
+
     /**
      * Display the specified resource.
      */
