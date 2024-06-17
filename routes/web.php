@@ -29,22 +29,30 @@ Route::get('/dashboard', [FilecasesController::class, 'dashboard'])
 
     //this routes can access bu assistant
     Route::middleware(['auth', 'role:assistant'])->group(function () {
+        Route::post('/create-case', [CasesController::class, 'store'])->name('store.case');
+
+        Route::post('/folders', [FolderController::class, 'storeFolder'])->name('folder.store');
+
         Route::get('/folders', [FilecasesController::class, 'viewFolders'])->name('folders');
 
         Route::get('/case', [CasesController::class, 'createCase'])->name('case');
 
         Route::get('/cases/{caseId}/folders/{folderId}/pdf', [FilecasesController::class, 'viewPDF'])->name('folder.viewPDF');
 
-        Route::get('/case/{id}/folders', [CasesController::class, 'showFolders'])->name('case.folders');
+        Route::get('case/folders/{id}', [CasesController::class, 'showFolders'])->name('case.folders');
 
         Route::get('/cases/{case}/folders/{folder}', [FolderController::class, 'viewFolderFileCases'])->name('case.folderFiles');
+       
+        Route::get('/all-folders', [FolderController::class, 'index'])->name('folders.index');
+
+        Route::get('/filter-folders', [FolderController::class, 'filter'])->name('folders.filter');
     });
 
 
 
     // Routes restricted to admin only
     Route::middleware(['auth', 'role:admin'])->group(function () {
-        Route::post('/create-case', [CasesController::class, 'store'])->name('store.case');
+       
 
         Route::post('/file/store', [FilecasesController::class, 'store'])->name('file.store');
 
@@ -56,7 +64,7 @@ Route::get('/dashboard', [FilecasesController::class, 'dashboard'])
 
         Route::post('/case/{id}/update', [CasesController::class, 'update'])->name('case.update');
 
-        Route::post('/folders', [FolderController::class, 'storeFolder'])->name('folder.store');
+        
 
         Route::delete('/cases/{case}/folders/{folder}', [FolderController::class, 'destroy'])->name('folder.destroy');
 

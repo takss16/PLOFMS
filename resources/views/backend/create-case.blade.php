@@ -23,21 +23,16 @@
                         <input type="text" class="form-control" id="docker_number" name="docker_number">
                     </div>
                     <div class="form-group">
+                        <label for="date">Date:</label>
+                        <input type="date" class="form-control" id="date" name="date">
+                    </div>
+                    <div class="form-group">
                         <label for="name">Name:</label>
                         <input type="text" class="form-control" id="name" name="name">
                     </div>
-                    <div class="form-group">
-                        <label for="folder_name">Folder Name:</label>
-                        <input type="text" class="form-control" id="folder_name" name="folder_name">
-                    </div>
-                    <div class="form-group">
-                        <label for="files">Files:</label>
-                        <input type="file" class="form-control-file" id="files" name="files[]" multiple>
-                    </div>
-                    
+                  
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
-
             </div>
         </div>
     </div>

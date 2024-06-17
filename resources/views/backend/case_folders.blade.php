@@ -3,97 +3,115 @@
         <h3><b>{{ $case->name }}</b> Case Folders</h3>
         <div class="card">
             <div class="card-body">
+           
                 <div class="mt-3 mb-3">
                     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addFolderModal">Add Folder</button>
                 </div>
+
+
                 @if($case->folders->isEmpty())
-                    <p>No folders found.</p>
+                <p>No folders found.</p>
                 @else
                 @foreach($case->folders as $folder)
 
                 <div style="display: inline-block; margin: 10px;">
-                        <div style="width: 200px; border: 1px solid #ccc; border-radius: 8px; padding: 10px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                                <a href="{{ route('case.folderFiles', ['case' => $case->id, 'folder' => $folder->id]) }}" style="text-decoration: none;">
-                                    <div class="card">
-                                        <div class="text-center mt-2">
-                                        <img src="{{ asset('admin_assets/img/folder.png') }}" alt="Folder Image" style="max-width: 50px; margin-bottom: 10px;">
-                                        <h4 style="margin: 0; color: inherit;">{{ $folder->folder_name }}</h4>
+                    <div style="width: 200px; border: 1px solid #ccc; border-radius: 8px; padding: 10px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        <a href="{{ route('case.folderFiles', ['case' => encrypt($case->id), 'folder' => encrypt($folder->id)]) }}" style="text-decoration: none;">
+                            <div class="card">
+                                <div class="text-center mt-2">
+                                    <img src="{{ asset('admin_assets/img/folder.png') }}" alt="Folder Image" style="max-width: 50px; margin-bottom: 10px;">
+                                    <h4 style="margin: 0; color: inherit;">{{ $folder->folder_name }}</h4>
+                                    <p>{{ $folder->type }}</p>
+                                </div>
+                            </div>
+                        </a>
+
+                        <hr>
+                        @hasrole('admin')
+                        <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteFolderModal{{ $folder->id }}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editFolderModal{{ $folder->id }}">
+                            <i class="fas fa-pencil-alt"></i>
+                        </button>
+                        @endrole
+
+                    </div>
+
+                    <div class="modal fade" id="editFolderModal{{ $folder->id }}" tabindex="-1" role="dialog" aria-labelledby="editFolderModalLabel{{ $folder->id }}" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editFolderModalLabel{{ $folder->id }}">Edit Folder</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- Edit folder form -->
+                                    <form action="{{ route('folder.update', ['folder' => $folder->id]) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="form-group">
+                                            <label for="folder_name">Folder Name</label>
+                                            <input type="text" class="form-control" id="folder_name" name="folder_name" value="{{ $folder->folder_name }}" required>
                                         </div>
-                                    </div>
-                                </a>
-                            <hr>
-                            @hasrole('admin')
-                            <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteFolderModal{{ $folder->id }}">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                            <button type="button" class="btn btn-sm btn-primary" data-toggle="modal" data-target="#editFolderModal{{ $folder->id }}">
-                                <i class="fas fa-pencil-alt"></i>
-                            </button>
-                            @endrole
+                                        <select class="form-control" id="type" name="type" required>
+                                            <option value="">Select Type</option>
+                                            <option value="criminal case" {{ $folder->type == 'criminal case' ? 'selected' : '' }}>Criminal Case</option>
+                                            <option value="civil case" {{ $folder->type == 'civil case' ? 'selected' : '' }}>Civil Case</option>
+                                            <option value="admin case" {{ $folder->type == 'admin case' ? 'selected' : '' }}>Admin Case</option>
+                                            <option value="nps docketed" {{ $folder->type == 'nps docketed' ? 'selected' : '' }}>NPS Docketed</option>
+                                            <option value="pending case" {{ $folder->type == 'pending case' ? 'selected' : '' }}>Pending Case</option>
+                                            <option value="land transfer" {{ $folder->type == 'land transfer' ? 'selected' : '' }}>Land Transfer</option>
+                                            <option value="annulment" {{ $folder->type == 'annulment' ? 'selected' : '' }}>Annulment</option>
+                                            <option value="blue box" {{ $folder->type == 'blue box' ? 'selected' : '' }}>Blue Box</option>
+                                            <option value="land issue" {{ $folder->type == 'land issue' ? 'selected' : '' }}>Land Issue</option>
+                                        </select>
 
-                        </div>
-
-                        <div class="modal fade" id="editFolderModal{{ $folder->id }}" tabindex="-1" role="dialog" aria-labelledby="editFolderModalLabel{{ $folder->id }}" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="editFolderModalLabel{{ $folder->id }}">Edit Folder</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <!-- Edit folder form -->
-                                        <form action="{{ route('folder.update', ['folder' => $folder->id]) }}" method="POST">
-                                            @csrf
-                                            @method('PUT')
-                                            <div class="form-group">
-                                                <label for="folder_name">Folder Name</label>
-                                                <input type="text" class="form-control" id="folder_name" name="folder_name" value="{{ $folder->folder_name }}" required>
-                                            </div>
-                                            <div class="modal-footer">
+                                        <div class="modal-footer">
                                             <button type="submit" class="btn btn-primary">Update Folder</button>
-                                        </form>
-                                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                    </div>
-                                    </div>
+                                    </form>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                                 </div>
                             </div>
                         </div>
-                        <!-- Delete Folder Modal -->
-                        <div class="modal fade" id="deleteFolderModal{{ $folder->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteFolderModalLabel{{ $folder->id }}" aria-hidden="true">
-                            <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <h5 class="modal-title" id="deleteFolderModalLabel{{ $folder->id }}">Delete Folder</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <p>Are you sure you want to delete the folder "{{ $folder->folder_name }}"?</p>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <form action="{{ route('folder.destroy', ['case' => $case->id, 'folder' => $folder->id]) }}" method="POST">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-danger">Delete</button>
-                                        </form>
-                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    </div>
                 </div>
-            @endforeach
-
-                @endif
-
-                <div class="mt-5">
-                    <a href="{{ route('folders') }}" class="btn btn-secondary">Back to Cases</a>
+                <!-- Delete Folder Modal -->
+                <div class="modal fade" id="deleteFolderModal{{ $folder->id }}" tabindex="-1" role="dialog" aria-labelledby="deleteFolderModalLabel{{ $folder->id }}" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="deleteFolderModalLabel{{ $folder->id }}">Delete Folder</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <p>Are you sure you want to delete the folder "{{ $folder->folder_name }}"?</p>
+                            </div>
+                            <div class="modal-footer">
+                                <form action="{{ route('folder.destroy', ['case' => $case->id, 'folder' => $folder->id]) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+            @endforeach
+
+            @endif
+
+            <div class="mt-5">
+                <a href="{{ route('folders') }}" class="btn btn-secondary">Back to Cases</a>
+            </div>
         </div>
+    </div>
     </div>
 
     <!-- Add Folder Modal -->
@@ -115,15 +133,30 @@
                             <label for="folder_name">Folder Name</label>
                             <input type="text" class="form-control" id="folder_name" name="folder_name" required>
                         </div>
-                        <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Add Folder</button>
-                    </form>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <div class="form-group">
+                            <label for="type">Type:</label>
+                            <select class="form-control" id="type" name="type">
+                                <option value="">Select Type</option>
+                                <option value="criminal case">Criminal Case</option>
+                                <option value="civil case">Civil Case</option>
+                                <option value="admin case">Admin Case</option>
+                                <option value="nps docketed">NPS Docketed</option>
+                                <option value="pending case">Pending Case</option>
+                                <option value="land transfer">Land Transfer</option>
+                                <option value="annulment">Annulment</option>
+                                <option value="blue box">Blue Box</option>
+                                <option value="land issue">Land Issue</option>
+                            </select>
                         </div>
-
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Add Folder</button>
+                    </form>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </div>
+
             </div>
         </div>
+    </div>
     </div>
 
 
