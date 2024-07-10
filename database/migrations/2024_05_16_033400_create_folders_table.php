@@ -16,8 +16,10 @@ return new class extends Migration
             $table->unsignedBigInteger('cases_id');
             $table->foreign('cases_id')->references('id')->on('cases')->onDelete('cascade');
             $table->string('folder_name');
+            $table->string('type'); // Adding the type column
             $table->timestamps();
         });
+        
     }
 
     /**

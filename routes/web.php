@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 
 use App\Http\Controllers\CasesController;
+use App\Http\Controllers\CasefolderController;
 use App\Http\Controllers\FolderController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\FilecasesController;
@@ -29,6 +30,7 @@ Route::get('/dashboard', [FilecasesController::class, 'dashboard'])
 
     //this routes can access bu assistant
     Route::middleware(['auth', 'role:assistant'])->group(function () {
+
         Route::get('/folders', [FilecasesController::class, 'viewFolders'])->name('folders');
 
         Route::get('/case', [CasesController::class, 'createCase'])->name('case');
@@ -36,17 +38,32 @@ Route::get('/dashboard', [FilecasesController::class, 'dashboard'])
         Route::get('/cases/{caseId}/folders/{folderId}/pdf', [FilecasesController::class, 'viewPDF'])->name('folder.viewPDF');
 
         Route::get('case/folders/{id}', [CasesController::class, 'showFolders'])->name('case.folders');
+        Route::get('/cases/{id}/search', [CasesController::class, 'searchFolders'])->name('folders.search');
 
-        Route::get('/cases/{case}/folders/{folder}', [FolderController::class, 'viewFolderFileCases'])->name('case.folderFiles');
+        Route::get('/casefol/{case}/casefolders/{folder}', [FolderController::class, 'viewCasefolder'])->name('case.casefolder');
+
+        Route::get('/cases/{case}/folders/{folder}/casefolders/{casefolder}/filecases', [FolderController::class, 'viewFolderFileCases'])->name('case.folderFiles');
+
+        Route::post('/casefolders', [CasefolderController::class, 'store'])->name('casefolder.store');
+        Route::put('/casefolders/{id}', [CasefolderController::class, 'update'])->name('casefolder.update');
+        Route::delete('/casefolders/{id}', [CasefolderController::class, 'destroy'])->name('casefolder.destroy');
+
+        Route::post('/create-case', [CasesController::class, 'store'])->name('store.case');
+
+        Route::post('/filecases/store', [FilecasesController::class, 'store'])->name('file.store');
+       
+        Route::get('/all-folders', [FolderController::class, 'index'])->name('folders.index');
+        Route::get('/filter-folders', [FolderController::class, 'filter'])->name('folders.filter');
+
+       
+
     });
 
 
 
     // Routes restricted to admin only
     Route::middleware(['auth', 'role:admin'])->group(function () {
-        Route::post('/create-case', [CasesController::class, 'store'])->name('store.case');
-
-        Route::post('/file/store', [FilecasesController::class, 'store'])->name('file.store');
+   
 
         Route::delete('/file/{id}', [FilecasesController::class, 'destroy'])->name('file.destroy');
 

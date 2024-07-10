@@ -9,10 +9,10 @@ class Filecases extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['folders_id', 'file_name'];
+    protected $fillable = ['casefolder_id', 'file_name'];
 
-    public function folders()
+    public function casefolder()
     {
-        return $this->belongsTo(Folders::class, 'folders_id');
+        return $this->belongsTo(Casefolder::class, 'casefolder_id');
     }
 }

@@ -43,7 +43,7 @@
                                 <td>{{ $case->docker_number }}</td>
                                 <td class="text-center">
                                     <a href="{{ route('case.folders', encrypt($case->id)) }}">
-                                        <img src="{{ asset('admin_assets/img/folder.png') }}" alt="Folder Image" class="img-fluid" style="max-width: 50px; cursor: pointer;">
+                                        <img src="{{ asset('admin_assets/img/folderss.png') }}" alt="Folder Image" class="img-fluid" style="max-width: 50px; cursor: pointer;">
                                     </a>
 
                                 </td>

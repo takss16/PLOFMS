@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('filecases', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('folders_id');
-            $table->foreign('folders_id')->references('id')->on('folders')->onDelete('cascade');
+            $table->unsignedBigInteger('casefolder_id'); // Add this line
+            $table->foreign('casefolder_id')->references('id')->on('casefolders')->onDelete('cascade'); // Add this line
             $table->string('file_name');
             $table->timestamps();
         });

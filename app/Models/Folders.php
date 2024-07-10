@@ -9,15 +9,15 @@ class Folders extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['cases_id', 'folder_name'];
+    protected $fillable = ['cases_id', 'folder_name', 'type'];
 
     public function cases()
     {
         return $this->belongsTo(Cases::class, 'cases_id');
     }
 
-    public function fileCases()
+    public function casefolders()
     {
-        return $this->hasMany(Filecases::class, 'folders_id');
+        return $this->hasMany(Casefolder::class, 'folder_id');
     }
 }

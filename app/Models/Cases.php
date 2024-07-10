@@ -9,7 +9,12 @@ class Cases extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['case_number', 'docker_number', 'name'];
+    protected $fillable = [
+        'case_number',
+        'docker_number',
+        'name',
+        'date',
+    ];
 
     public function folders()
     {

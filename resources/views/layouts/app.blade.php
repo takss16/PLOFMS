@@ -57,28 +57,38 @@
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
-            <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
-                <a class="nav-link" href="{{route('dashboard')}}">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
-            </li>
-            <!-- Divider -->
-            <hr class="sidebar-divider">
-            <li class="nav-item active">
-                <a class="nav-link" href="{{route('folders')}}">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Folder Management</span></a>
-            </li>
-            <hr class="sidebar-divider">
-            <li class="nav-item active">
-                @hasrole('admin')
-                <a class="nav-link" href="{{route('manage.users')}}">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Users Management</span></a>
-                @endrole
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ route('dashboard') }}">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+        <!-- Divider -->
+        <hr class="sidebar-divider">
+        <li class="nav-item active">
+            <a class="nav-link" href="{{ route('folders') }}">
+                <i class="fas fa-fw fa-folder"></i> <!-- Changed icon to fa-folder -->
+                <span>Cases</span>
+            </a>
+        </li>
+        <hr class="sidebar-divider">
+        <li class="nav-item active">
+            <a class="nav-link" href="{{ route('folders.index') }}">
+                <i class="fas fa-fw fa-filter"></i> <!-- Changed icon to fa-filter -->
+                <span>Filter by Type</span>
+            </a>
+        </li>
+        <hr class="sidebar-divider">
+        <li class="nav-item active">
+            @hasrole('admin')
+            <a class="nav-link" href="{{ route('manage.users') }}">
+                <i class="fas fa-fw fa-users"></i> <!-- Changed icon to fa-users -->
+                <span>Users Management</span>
+            </a>
+            @endrole
+        </li>
 
-            </li>
+            
 
         </ul>
         <!-- End of Sidebar -->

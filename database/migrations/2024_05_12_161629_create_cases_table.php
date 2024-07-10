@@ -16,8 +16,9 @@ return new class extends Migration
             $table->string('case_number');
             $table->string('docker_number');
             $table->string('name');
+            $table->date('date'); // Adding the date column
             $table->timestamps();
-        });
+        });        
     }
 
     /**

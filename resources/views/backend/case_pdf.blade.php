@@ -19,14 +19,24 @@
 </head>
 <body>
     <h3>Folder: {{ $folder->folder_name }} (Case #{{ $case->case_number }})</h3>
-    @if($folder->fileCases->isEmpty())
-        <p>No file cases available in this folder.</p>
+    @if($folder->casefolders->isEmpty())
+    <p>No casefolders available in this folder.</p>
     @else
-        @foreach($folder->fileCases as $fileCase)
-            <div class="file-case">
-                <img src="{{ public_path('storage/files/' . $fileCase->file_name) }}" alt="{{ $fileCase->file_name }}">
-                <p>{{ $fileCase->file_name }}</p>
-            </div>
+        @foreach($folder->casefolders as $casefolder)
+            <h3>Casefolder: {{ $casefolder->name }}</h3>
+
+            @if($casefolder->fileCases->isEmpty())
+                <p>No file cases available in this casefolder.</p>
+            @else
+                <div class="file-cases">
+                    @foreach($casefolder->fileCases as $fileCase)
+                        <div class="file-case">
+                            <img src="{{ public_path('storage/files/' . $fileCase->file_name) }}" alt="{{ $fileCase->file_name }}">
+                            <p>{{ $fileCase->file_name }}</p>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
         @endforeach
     @endif
 </body>
